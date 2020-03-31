@@ -1,0 +1,16 @@
+[paths]
+source =
+   src
+   .tox/py*/site-packages
+
+[run]
+branch = true
+source =
+    audiomatch
+    tests
+parallel = true
+
+[report]
+precision = 2
+fail_under = 100
+show_missing = true

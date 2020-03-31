@@ -13,16 +13,15 @@ EXTENSIONS = ["mp3", "m4a", "caf"]
 def match(path, length):
     start = time.time()
 
-    files = list(itertools.chain.from_iterable((
-        pathlib.Path(path).glob(f"*.{extension}")
-        for extension in EXTENSIONS
-    )))
+    files = list(
+        itertools.chain.from_iterable(
+            (pathlib.Path(path).glob(f"*.{extension}") for extension in EXTENSIONS)
+        )
+    )
     with concurrent.futures.ThreadPoolExecutor() as executor:
         func = functools.partial(fingerprints.calc, length=length)
         fps = {
-            files[i].name: fp
-            for i, fp in enumerate(executor.map(func, files))
-            if fp
+            files[i].name: fp for i, fp in enumerate(executor.map(func, files)) if fp
         }
     print(f"fpcalc elapsed in: {time.time() - start}")
 
