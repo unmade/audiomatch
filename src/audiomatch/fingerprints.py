@@ -24,9 +24,9 @@ def compare(pair):
     # When comparing fingerprints we take first 30 seconds of the the shortest
     # fingerprint and try to find it in a longer one
     if len(fp1) > len(fp2):
-        return find_best_score(fp1, fp2[:seconds(30)])
+        return find_best_score(fp1, fp2[: seconds(30)])
     else:
-        return find_best_score(fp2, fp1[:seconds(30)])
+        return find_best_score(fp2, fp1[: seconds(30)])
 
 
 def find_best_score(fp1, fp2):
@@ -52,7 +52,7 @@ def find_best_score(fp1, fp2):
         # avoid false positives - they tend to have rather the same score regardless
         # of how fingerprints are aligned
         offset = 5
-        samples = results[i - offset:i] + results[i + 1:i + offset + 1]
+        samples = results[i - offset : i] + results[i + 1 : i + offset + 1]
         if score - statistics.median(samples) > SCORE_MEDIAN_DELTA:
             return score
 

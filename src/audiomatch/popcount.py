@@ -15,4 +15,4 @@ POPCOUNT_TABLE16 = popcount_table16()
 
 
 def popcount(x):
-    return POPCOUNT_TABLE16[x & 0xffff] + POPCOUNT_TABLE16[(x >> 16) & 0xffff]
+    return POPCOUNT_TABLE16[x & 0xFFFF] + POPCOUNT_TABLE16[(x >> 16) & 0xFFFF]
