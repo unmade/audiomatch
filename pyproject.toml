@@ -1,0 +1,21 @@
+[tool.poetry]
+name = "audiomatch"
+version = "0.1.0"
+description = ""
+authors = ["Aleksei Maslakov <lesha.maslakov@gmail.com>"]
+packages = [
+    { include = "audiomatch", from = "src" },
+]
+
+[tool.poetry.scripts]
+match = "audiomatch.cli:main"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+
+[tool.poetry.dev-dependencies]
+tox = "^3.14.6"
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"
