@@ -2,6 +2,7 @@ from importlib import resources
 from typing import List
 
 import pytest
+
 from audiomatch import fingerprints
 
 
