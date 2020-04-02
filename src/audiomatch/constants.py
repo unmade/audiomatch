@@ -1,0 +1,2 @@
+DEFAULT_LENGTH = 120
+DEFAULT_EXTENSIONS = (".caf", ".m4a", ".mp3")

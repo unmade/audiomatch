@@ -7,11 +7,10 @@ from pathlib import Path
 from typing import Iterator, List, Tuple
 
 from audiomatch import fingerprints
+from audiomatch.constants import DEFAULT_EXTENSIONS, DEFAULT_LENGTH
 
-EXTENSIONS = (".caf", ".m4a", ".mp3")
 
-
-def match(*paths: Path, length, extensions=EXTENSIONS):
+def match(*paths: Path, length=DEFAULT_LENGTH, extensions=DEFAULT_EXTENSIONS):
     pairs = list(pair(*paths, extensions=extensions))
 
     start = time.time()
@@ -35,7 +34,7 @@ def pair(*paths: Path, extensions: List[str]) -> Iterator[Tuple[Path, Path]]:
 
     Args:
         *paths: a file, glob-style pattern or a directory.
-        extensions: filename extensions that should be lookep up in paths.
+        extensions: only take files with given extensions.
 
     Raises:
         ValueError: If only single found in paths.
