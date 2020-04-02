@@ -1,4 +1,4 @@
-from audiomatch.cli import main
+from audiomatch import cli
 
 if __name__ == "__main__":
-    main()
+    cli.invoke()
