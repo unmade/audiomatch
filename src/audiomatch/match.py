@@ -1,5 +1,6 @@
 import concurrent.futures
 import functools
+import glob
 import itertools
 import time
 from pathlib import Path
@@ -7,11 +8,11 @@ from typing import Iterator, List, Tuple
 
 from audiomatch import fingerprints
 
-PATTERNS = ("*.caf", "*.m4a", "*.mp3")
+EXTENSIONS = (".caf", ".m4a", ".mp3")
 
 
-def match(*paths: Path, length, patterns=PATTERNS):
-    pairs = list(pair(*paths, patterns=patterns))
+def match(*paths: Path, length, extensions=EXTENSIONS):
+    pairs = list(pair(*paths, extensions=extensions))
 
     start = time.time()
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -23,24 +24,37 @@ def match(*paths: Path, length, patterns=PATTERNS):
     start = time.time()
     scores = [fingerprints.compare(fps[a], fps[b]) for a, b in pairs]
     print(f"elapsed: {time.time() - start}")
+    results = dict(zip(pairs, scores))
+    print(results)
+    return results
 
-    return dict(zip(pairs, scores))
 
+def pair(*paths: Path, extensions: List[str]) -> Iterator[Tuple[Path, Path]]:
+    """
+    Returns a cartesian product of all files found in paths.
 
-def pair(*paths: Path, patterns: List[str]) -> Iterator[Tuple[Path, Path]]:
+    Args:
+        *paths: a file, glob-style pattern or a directory.
+        extensions: filename extensions that should be lookep up in paths.
+
+    Raises:
+        ValueError: If only single found in paths.
+
+    Returns: A 2-length tuples where each element is a filepath.
+    """
     files = []
     for path in paths:
         if path.is_dir():
-            for pattern in patterns:
-                files.append([p for p in path.glob(pattern)])
-        else:
-            files.append([path])
+            path = path.joinpath("*")
+        files.append(
+            [p for s in glob.iglob(str(path)) if (p := Path(s)).suffix in extensions]
+        )
 
-    if len(paths) == 1 and paths[0].is_dir():
+    if len(files) == 1 and len(files[0]) > 1:
         return itertools.combinations(*files, 2)
-    elif len(paths) > 1:
+    elif len(files) > 1:
         return itertools.chain.from_iterable(
             itertools.product(*group) for group in itertools.combinations(files, 2)
         )
     else:
-        raise ValueError
+        raise ValueError("Too few files to compare")
