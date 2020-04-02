@@ -26,4 +26,4 @@ def _load_fp(filepath: str) -> List[int]:
 def test_compare(a, b, score):
     fp1 = _load_fp(a)
     fp2 = _load_fp(b)
-    assert round(fingerprints.compare((fp1, fp2)), 2) == score
+    assert round(fingerprints.compare(fp1, fp2), 2) == score
