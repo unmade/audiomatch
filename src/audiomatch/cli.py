@@ -38,7 +38,7 @@ def get_parser():
         "--extension",
         action="append",
         help=f"""
-            Take only files with given with extension
+            Take only files with given extension
             (default: {', '.join(DEFAULT_EXTENSIONS)})
         """,
     )
