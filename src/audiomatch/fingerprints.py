@@ -11,12 +11,11 @@ SCORE_MEDIAN_DELTA = 0.04
 def calc(path, length=120):
     # TODO: Probably it would be better to parse json output
     fp = subprocess.run(
-        ["fpcalc", "-rate", "11025", "-raw", "-length", str(length), path],
+        f"fpcalc -rate 11025 -raw -length {length} {path}".split(),
         stdout=subprocess.PIPE,
     )
-    if lines := fp.stdout.decode().splitlines():
-        return [int(value) for value in lines[1].strip("FINGERPRINT=").split(",")]
-    return []
+    lines = fp.stdout.decode().splitlines()
+    return [int(value) for value in lines[1].strip("FINGERPRINT=").split(",")]
 
 
 def compare(fp1, fp2):
@@ -40,7 +39,7 @@ def find_best_score(fp1, fp2):
 
         i = results.index(score)
 
-        # A lot of false positive happens with fingerprint less than 20 sec, so we need
+        # A lot of false positives happen with fingerprints less than 20 sec, so we need
         # to slightly correct the score. If it really matches another fingerprint the
         # score will be high enough to not be affected by this
         if min(len(fp1), len(fp2)) < seconds(20):
