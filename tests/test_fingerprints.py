@@ -23,6 +23,15 @@ def test_calc():
     assert fpcalc_mock.called
 
 
+def test_calc_empty_fingerprint():
+    fp = b""
+    fpcalc = mock.MagicMock(spec=CompletedProcess, stdout=fp)
+    with mock.patch("subprocess.run", return_value=fpcalc) as fpcalc_mock:
+        fp = fingerprints.calc("/path/to/audio", length=120)
+    assert fp == []
+    assert fpcalc_mock.called
+
+
 @pytest.mark.parametrize(
     ["a", "b", "score"],
     [

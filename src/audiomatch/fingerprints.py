@@ -11,11 +11,12 @@ SCORE_MEDIAN_DELTA = 0.04
 def calc(path, length=120):
     # TODO: Probably it would be better to parse json output
     fp = subprocess.run(
-        f"fpcalc -rate 11025 -raw -length {length} {path}".split(),
+        ["fpcalc", "-rate", "11025", "-raw", "-length", str(length), str(path)],
         stdout=subprocess.PIPE,
     )
-    lines = fp.stdout.decode().splitlines()
-    return [int(value) for value in lines[1].strip("FINGERPRINT=").split(",")]
+    if lines := fp.stdout.decode().splitlines():
+        return [int(value) for value in lines[1].strip("FINGERPRINT=").split(",")]
+    return []
 
 
 def compare(fp1, fp2):
