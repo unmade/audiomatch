@@ -2,7 +2,7 @@
 pip-wheel-metadata
 dist
 
-.coverage
+.coverage.*
 
 __pycache__
 .pytest_cache

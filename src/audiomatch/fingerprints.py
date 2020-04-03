@@ -20,8 +20,8 @@ def calc(path, length=120):
 
 
 def compare(fp1, fp2):
-    # When comparing fingerprints we take first 30 seconds of the the shortest
-    # fingerprint and try to find it in a longer one
+    # Take first 30 seconds of the the shortest fingerprint and try to find it in a
+    # longer one
     if len(fp1) > len(fp2):
         return find_best_score(fp1, fp2[: seconds(30)])
     else:
