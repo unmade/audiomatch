@@ -11,8 +11,10 @@ SAMPLES_DIR = Path(__file__).parent.joinpath("data")
 
 def fpcalc(filepath: Path, length):
     name, subpackage = filepath.parts[-1:-3:-1]
-    lines = resources.read_text(f"tests.data.{subpackage}", name).splitlines()
-    return [int(value) for value in lines[1].strip("FINGERPRINT=").split(",")]
+    package = "tests.data" if subpackage == "data" else f"tests.data.{subpackage}"
+    if lines := resources.read_text(package, name).splitlines():
+        return [int(value) for value in lines[1].strip("FINGERPRINT=").split(",")]
+    return []
 
 
 @pytest.mark.slow
@@ -22,4 +24,14 @@ def test_match():
     with mock.patch("audiomatch.fingerprints.calc", side_effect=fpcalc) as fpcalc_mock:
         matches = match.match(sample_1, sample_2, extensions=[".log"])
     assert matches == {frozenset((sample_1, sample_2)): 0.0}
+    assert fpcalc_mock.call_count == 2
+
+
+@pytest.mark.slow
+def test_match_with_empty_fingerprint():
+    sample_1 = SAMPLES_DIR.joinpath("sample-1/take-1.log")
+    empty = SAMPLES_DIR.joinpath("empty.log")
+    with mock.patch("audiomatch.fingerprints.calc", side_effect=fpcalc) as fpcalc_mock:
+        matches = match.match(sample_1, empty, extensions=[".log"])
+    assert matches == {frozenset((sample_1, empty)): 0.0}
     assert fpcalc_mock.call_count == 2

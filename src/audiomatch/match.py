@@ -28,13 +28,10 @@ def match(
         A dictionary where key is a pair of filepaths and value is a score between them.
     """
     pairs = [frozenset(pair) for pair in files.pair(*paths, extensions=extensions)]
-
     filepaths = list(set(itertools.chain.from_iterable(pairs)))
     func = functools.partial(fingerprints.calc, length=length)
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        fps = {
-            filepaths[i]: fp for i, fp in enumerate(executor.map(func, filepaths)) if fp
-        }
+        fps = {filepaths[i]: fp for i, fp in enumerate(executor.map(func, filepaths))}
 
     # Using multiprocessing.Pool.starmap method we can avoid writing wrapper to unpack
     # arguments. However, multiprocessing.Pool doesn't play nicely with coverage, and
