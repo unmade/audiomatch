@@ -1,14 +1,15 @@
 import argparse
 import pathlib
 
-from audiomatch import match
+from audiomatch import match, reports
 from audiomatch.constants import DEFAULT_EXTENSIONS, DEFAULT_LENGTH
 
 
 def invoke():
     parser = get_parser()
     args = parser.parse_args()
-    match.match(*args.path, length=args.length, extensions=args.extension)
+    matches = match.match(*args.path, length=args.length, extensions=args.extension)
+    reports.console(matches)
 
 
 def get_parser():
