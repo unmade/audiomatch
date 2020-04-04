@@ -2,6 +2,7 @@
 pip-wheel-metadata
 dist
 
+.coverage
 .coverage.*
 
 __pycache__
