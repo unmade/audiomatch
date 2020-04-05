@@ -1,14 +1,21 @@
 import argparse
 import pathlib
+import sys
 
 from audiomatch import match, reports
 from audiomatch.constants import DEFAULT_EXTENSIONS, DEFAULT_LENGTH
+from audiomatch.exceptions import NotEnoughFiles
 
 
 def invoke():
     parser = get_parser()
     args = parser.parse_args()
-    matches = match.match(*args.path, length=args.length, extensions=args.extension)
+
+    try:
+        matches = match.match(*args.path, length=args.length, extensions=args.extension)
+    except NotEnoughFiles as exc:
+        sys.exit(exc)
+
     reports.console(matches)
 
 

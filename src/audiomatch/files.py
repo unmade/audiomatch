@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Iterable, Iterator, Optional, Tuple
 
 from audiomatch.constants import DEFAULT_EXTENSIONS
+from audiomatch.exceptions import NotEnoughFiles
 
 
 def pair(
@@ -46,4 +47,4 @@ def pair(
             itertools.product(*group) for group in itertools.combinations(files, 2)
         )
     else:
-        raise ValueError("Too few files to compare")
+        raise NotEnoughFiles("Not enough input files.")

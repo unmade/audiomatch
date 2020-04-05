@@ -3,6 +3,7 @@ from pathlib import Path
 import pytest
 
 from audiomatch import files
+from audiomatch.exceptions import NotEnoughFiles
 
 SAMPLES_DIR = Path(__file__).parent.joinpath("data")
 SAMPLES_1 = [SAMPLES_DIR.joinpath(f"sample-1/take-{i}.log") for i in range(1, 4)]
@@ -62,6 +63,6 @@ def test_pair_glob():
 
 def test_pair_one_file():
     file = SAMPLES_DIR.joinpath("sample-1/take-1.log")
-    with pytest.raises(ValueError) as excinfo:
+    with pytest.raises(NotEnoughFiles) as excinfo:
         files.pair(file)
-    assert str(excinfo.value) == "Too few files to compare"
+    assert str(excinfo.value) == "Not enough input files."
