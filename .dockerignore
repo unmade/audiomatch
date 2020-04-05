@@ -1,1 +1,6 @@
 **/*
+
+!src
+!**/*.py
+!pyproject.toml
+!poetry.lock
