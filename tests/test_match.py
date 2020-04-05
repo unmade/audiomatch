@@ -1,3 +1,4 @@
+import operator
 from importlib import resources
 from pathlib import Path
 from unittest import mock
@@ -7,6 +8,11 @@ import pytest
 from audiomatch import match
 
 SAMPLES_DIR = Path(__file__).parent.joinpath("data")
+
+
+def sort_keys(matches):
+    d = {k.__class__(sorted(k)): v for k, v in matches.items()}
+    return dict(sorted(d.items(), key=operator.itemgetter(0)))
 
 
 def fpcalc(filepath: Path, length):
@@ -23,7 +29,7 @@ def test_match():
     sample_2 = SAMPLES_DIR.joinpath("sample-2/take-1.log")
     with mock.patch("audiomatch.fingerprints.calc", side_effect=fpcalc) as fpcalc_mock:
         matches = match.match(sample_1, sample_2, extensions=[".log"])
-    assert matches == {frozenset((sample_1, sample_2)): 0.0}
+    assert sort_keys(matches) == {(sample_1, sample_2): 0.0}
     assert fpcalc_mock.call_count == 2
 
 
@@ -33,5 +39,5 @@ def test_match_with_empty_fingerprint():
     empty = SAMPLES_DIR.joinpath("empty.log")
     with mock.patch("audiomatch.fingerprints.calc", side_effect=fpcalc) as fpcalc_mock:
         matches = match.match(sample_1, empty, extensions=[".log"])
-    assert matches == {frozenset((sample_1, empty)): 0.0}
+    assert sort_keys(matches) == {(empty, sample_1): 0.0}
     assert fpcalc_mock.call_count == 2

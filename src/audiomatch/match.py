@@ -4,7 +4,7 @@ import concurrent.futures
 import functools
 import itertools
 from pathlib import Path
-from typing import Dict, FrozenSet, Iterable, Optional
+from typing import Dict, Iterable, Optional, Tuple
 
 from audiomatch import files, fingerprints
 from audiomatch.constants import DEFAULT_LENGTH
@@ -14,7 +14,7 @@ def match(
     *paths: Path,
     length: int = DEFAULT_LENGTH,
     extensions: Optional[Iterable[str]] = None,
-) -> Dict[FrozenSet[Path], float]:
+) -> Dict[Tuple[Path, Path], float]:
     """
     Finds similar audio files in paths.
 
@@ -27,7 +27,7 @@ def match(
     Returns:
         A dictionary where key is a pair of filepaths and value is a score between them.
     """
-    pairs = [frozenset(pair) for pair in files.pair(*paths, extensions=extensions)]
+    pairs = list(files.pair(*paths, extensions=extensions))
     filepaths = list(set(itertools.chain.from_iterable(pairs)))
     func = functools.partial(fingerprints.calc, length=length)
     with concurrent.futures.ThreadPoolExecutor() as executor:
