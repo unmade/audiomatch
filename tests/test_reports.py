@@ -31,14 +31,19 @@ def test_console(capsys):
     reports.console(matches)
     output = capsys.readouterr()
     assert output.out.splitlines() == [
+        "These files sound similar:",
+        "",
         "sample-1/take-1.m4a",
         "sample-1/take-2.m4a",
         "sample-1/take-3.m4a",
+        "",
         "---",
+        "",
         "sample-2/take-1.m4a",
         "sample-2/take-2.m4a",
         "sample-2/take-3.m4a",
         "sample-2/take-4.m4a",
+        "",
     ]
 
 
@@ -51,9 +56,12 @@ def test_console_for_transitive_matches(capsys):
     reports.console(matches)
     output = capsys.readouterr()
     assert output.out.splitlines() == [
+        "These files sound similar:",
+        "",
         "a",
         "b",
         "c",
+        "",
     ]
 
 
@@ -66,4 +74,5 @@ def test_console_no_matches(capsys):
     output = capsys.readouterr()
     assert output.out.splitlines() == [
         "No matches found.",
+        "",
     ]
