@@ -4,6 +4,7 @@ from unittest import mock
 import pytest
 
 from audiomatch import cli
+from audiomatch.exceptions import NotEnoughFiles
 
 
 @pytest.mark.parametrize(
@@ -32,3 +33,12 @@ def test_cli(cli_args, call_args):
         with mock.patch("audiomatch.match.match") as mocked_match:
             cli.invoke()
     assert mocked_match.call_args == call_args
+
+
+def test_cli_error(capsys):
+    cli_args = ["audiomatch", "directory"]
+    with mock.patch("sys.argv", cli_args):
+        with mock.patch("audiomatch.match.match", side_effect=NotEnoughFiles) as match:
+            with pytest.raises(SystemExit):
+                cli.invoke()
+    assert match.called
