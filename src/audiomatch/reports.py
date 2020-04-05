@@ -7,11 +7,12 @@ def console(matches) -> None:
     lines = ["\n".join(str(node) for node in similar) for similar in sorted(similars)]
 
     if lines:
-        sys.stdout.write("\n---\n".join(lines))
+        sys.stdout.write("These files sound similar:\n\n")
+        sys.stdout.write("\n\n---\n\n".join(lines))
     else:
         sys.stdout.write("No matches found.")
 
-    sys.stdout.write("\n")
+    sys.stdout.write("\n\n")
 
 
 def _join(graph):
