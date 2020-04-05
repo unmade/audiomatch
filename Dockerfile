@@ -5,4 +5,9 @@ RUN apk update \
     && echo "http://dl-cdn.alpinelinux.org/alpine/edge/community" >> /etc/apk/repositories \
     && apk add --no-cache chromaprint-dev
 
-CMD ["/bin/sh"]
+ARG package_version
+ENV PACKAGE_VERSION=$package_version
+
+RUN pip3 install "audiomatch==${PACKAGE_VERSION}"
+
+ENTRYPOINT ["audiomatch"]
