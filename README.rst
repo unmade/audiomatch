@@ -6,6 +6,19 @@ audiomatch
     :alt: Build Status
     :target: https://github.com/unmade/audiomatch/blob/master/.github/workflows/lint-and-test.yml
 
+.. image:: https://codecov.io/gh/unmade/audiomatch/branch/master/graph/badge.svg
+    :alt: Coverage Status
+    :target: https://codecov.io/gh/unmade/audiomatch
+
+.. image:: https://img.shields.io/pypi/v/audiomatch.svg
+    :alt: PyPI Package latest release
+    :target: https://pypi.org/project/audiomatch
+
+.. image:: https://img.shields.io/badge/License-MIT-purple.svg
+    :alt: MIT License
+    :target: https://github.com/unmade/apiwrappers/blob/master/LICENSE
+
+
 A small command-line tool to find similar audio files
 
 Installation
@@ -26,7 +39,7 @@ docker:
 
 .. code-block:: bash
 
-    docker run --rm -v=/path/to/audio/folder:/tmp -it fdooch/audiomatch /bin/sh
+    docker run --rm -v "$(pwd)":/tmp fdooch/audiomatch "/tmp/*"
 
 Quickstart
 ==========
@@ -62,7 +75,9 @@ Let's find out which files sound similar:
     ./demo/Pennyroyal Tea (Solo Acoustic).mp3
     ./demo/Pennyroyal Tea (Unplugged in NYC).m4a
 
-*Note: input audio files should be at least 10 seconds long*
+*Note #1: input audio files should be at least 10 seconds long*
+
+*Note #2: in some rare cases false positives are possible*
 
 What's happening here is that *audiomatch* takes all audio files from the directory and
 compares them with each other.
