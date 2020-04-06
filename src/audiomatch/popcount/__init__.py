@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import List
+
 try:
     from audiomatch.popcount._popcount import popcount
 except ImportError:
@@ -6,7 +10,7 @@ except ImportError:
     #
     # This popcount version works slightly faster than 'bin(x).count("1")'
 
-    def _popcount_table(size):
+    def _popcount_table(size: int) -> List[int]:
         table = [0] * 2 ** size
         for i in range(len(table)):
             table[i] = (i & 1) + table[i >> 1]
@@ -14,5 +18,5 @@ except ImportError:
 
     _POPCOUNT_TABLE16 = _popcount_table(16)
 
-    def popcount(x):
+    def popcount(x: int) -> int:
         return _POPCOUNT_TABLE16[x & 0xFFFF] + _POPCOUNT_TABLE16[(x >> 16) & 0xFFFF]

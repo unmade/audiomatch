@@ -25,8 +25,8 @@ def fpcalc(filepath: Path, length):
 
 @pytest.mark.slow
 def test_match():
-    sample_1 = SAMPLES_DIR.joinpath("sample-1/take-1.log")
-    sample_2 = SAMPLES_DIR.joinpath("sample-2/take-1.log")
+    sample_1 = SAMPLES_DIR.joinpath("sample_1/take-1.log")
+    sample_2 = SAMPLES_DIR.joinpath("sample_2/take-1.log")
     with mock.patch("audiomatch.fingerprints.calc", side_effect=fpcalc) as fpcalc_mock:
         matches = match.match(sample_1, sample_2, extensions=[".log"])
     assert sort_keys(matches) == {(sample_1, sample_2): 0.0}
@@ -35,7 +35,7 @@ def test_match():
 
 @pytest.mark.slow
 def test_match_with_empty_fingerprint():
-    sample_1 = SAMPLES_DIR.joinpath("sample-1/take-1.log")
+    sample_1 = SAMPLES_DIR.joinpath("sample_1/take-1.log")
     empty = SAMPLES_DIR.joinpath("empty.log")
     with mock.patch("audiomatch.fingerprints.calc", side_effect=fpcalc) as fpcalc_mock:
         matches = match.match(sample_1, empty, extensions=[".log"])

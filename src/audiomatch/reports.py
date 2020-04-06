@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 import sys
+from pathlib import Path
+from typing import Dict, Tuple
 
 
-def console(matches) -> None:
+def console(matches: Dict[Tuple[Path, Path], float]) -> None:
     """Print similar audio to standard output"""
     similars = _join(_adjancency_list(matches))
     lines = ["\n".join(str(node) for node in similar) for similar in sorted(similars)]
@@ -29,7 +33,7 @@ def _join(graph):
 
 
 def _adjancency_list(matches, score=0.61):
-    """Returns an adjacency list for matches"""
+    """Returns an adjacency list for matches with a given score or higher"""
     graph = {}
     for pair, score in matches.items():
         if score > 0.61:

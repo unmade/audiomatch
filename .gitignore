@@ -1,11 +1,14 @@
 *.egg-info
 pip-wheel-metadata
 dist
+build
 
 *coverage*
 !.coveragerc
 
 __pycache__
 .pytest_cache
+
+.mypy_cache
 
 .tox

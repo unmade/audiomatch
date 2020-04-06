@@ -41,10 +41,11 @@ def pair(
         )
 
     if len(files) == 1 and len(files[0]) > 1:
-        return itertools.combinations(*files, 2)
+        return itertools.combinations(*files, 2)  # type: ignore
     elif len(files) > 1:
         return itertools.chain.from_iterable(
-            itertools.product(*group) for group in itertools.combinations(files, 2)
+            itertools.product(*group)  # type: ignore
+            for group in itertools.combinations(files, 2)
         )
     else:
         raise NotEnoughFiles("Not enough input files.")
