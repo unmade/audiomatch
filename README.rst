@@ -16,7 +16,7 @@ audiomatch
 
 .. image:: https://img.shields.io/badge/License-MIT-purple.svg
     :alt: MIT License
-    :target: https://github.com/unmade/apiwrappers/blob/master/LICENSE
+    :target: https://github.com/unmade/audiomatch/blob/master/LICENSE
 
 
 A small command-line tool to find similar audio files
