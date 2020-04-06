@@ -4,7 +4,7 @@ import concurrent.futures
 import functools
 import itertools
 from pathlib import Path
-from typing import Dict, Iterable, Optional, Tuple
+from typing import Dict, Iterable, List, Optional, Tuple
 
 from audiomatch import files, fingerprints
 from audiomatch.constants import DEFAULT_LENGTH
@@ -36,12 +36,12 @@ def match(
     # Using multiprocessing.Pool.starmap method we can avoid writing wrapper to unpack
     # arguments. However, multiprocessing.Pool doesn't play nicely with coverage, and
     # require to explicitly call 'pool.join'
-    with concurrent.futures.ProcessPoolExecutor() as executor:
-        scores = executor.map(_compare, ((fps[a], fps[b]) for a, b in pairs))
+    with concurrent.futures.ProcessPoolExecutor() as pool:
+        scores = pool.map(_compare, ((fps[a], fps[b]) for a, b in pairs))
 
     return dict(zip(pairs, scores))
 
 
-def _compare(pair):
+def _compare(pair: Tuple[List[int], List[int]]) -> float:
     """Just a wrapper for fingerprints.compare, that unpack its first argument"""
     return fingerprints.compare(*pair)

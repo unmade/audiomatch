@@ -1,5 +1,9 @@
+from __future__ import annotations
+
 import statistics
 import subprocess
+from pathlib import Path
+from typing import Iterator, List, Tuple, Union
 
 from audiomatch import popcount
 
@@ -8,7 +12,7 @@ CORRECTION = 0.95
 SCORE_MEDIAN_DELTA = 0.04
 
 
-def calc(path, length=120):
+def calc(path: Path, length: int = 120) -> List[int]:
     # TODO: Probably it would be better to parse json output
     fp = subprocess.run(
         ["fpcalc", "-rate", "11025", "-raw", "-length", str(length), str(path)],
@@ -19,7 +23,7 @@ def calc(path, length=120):
     return []
 
 
-def compare(fp1, fp2):
+def compare(fp1: List[int], fp2: List[int]) -> float:
     # Take first 30 seconds of the the shortest fingerprint and try to find it in a
     # longer one
     if len(fp1) > len(fp2):
@@ -28,7 +32,7 @@ def compare(fp1, fp2):
         return find_best_score(fp2, fp1[: seconds(30)])
 
 
-def find_best_score(fp1, fp2):
+def find_best_score(fp1: List[int], fp2: List[int]) -> float:
     # Fingerprints lesser than 10 seconds don't have enough data for analysis
     if len(fp1) > seconds(10) and len(fp2) > seconds(10):
         results = [correlation(_fp1, _fp2) for _fp1, _fp2 in cross(fp1, fp2)]
@@ -58,12 +62,12 @@ def find_best_score(fp1, fp2):
     return 0.0
 
 
-def correlation(fp1, fp2):
+def correlation(fp1: List[int], fp2: List[int]) -> float:
     error = sum(popcount.popcount(x ^ y) for x, y in zip(fp1, fp2))
     return 1.0 - error / 32.0 / min(len(fp1), len(fp2))
 
 
-def cross(fp1, fp2):
+def cross(fp1: List[int], fp2: List[int]) -> Iterator[Tuple[List[int], List[int]]]:
     length = min(len(fp1), len(fp2))
     span = min(length // 4, seconds(5))
     limit = max(len(fp1), len(fp2)) - length - span
@@ -75,5 +79,5 @@ def cross(fp1, fp2):
         yield fp1[offset:], fp2
 
 
-def seconds(x) -> int:
+def seconds(x: Union[int, float]) -> int:
     return round(x * 7)
