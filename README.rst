@@ -34,6 +34,13 @@ Then you can install this library:
 
     pip install audiomatch
 
+To do things fast *audiomatch* requires C compiler and Python headers to be installed.
+You can skip compilation by setting ``AUDIOMATCH_NO_EXTENSIONS`` environment variable:
+
+.. code-block:: bash
+
+    AUDIOMATCH_NO_EXTENSIONS=1 pip install audiomatch
+
 You can avoid installing all this libraries on your computer and run everything in
 docker:
 

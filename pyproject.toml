@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "audiomatch"
-version = "0.1.8"
+version = "0.2.0"
 description = "A small command-line tool to find similar audio files"
 keywords = ["duplicate", "detection", "audio", "fingerprinting", "command-line"]
 readme = "README.rst"
@@ -17,6 +17,8 @@ classifiers = [
     "Topic :: Multimedia :: Sound/Audio :: Analysis",
     "Typing :: Typed",
 ]
+
+build = "build.py"
 
 [tool.poetry.scripts]
 audiomatch = "audiomatch.cli:invoke"

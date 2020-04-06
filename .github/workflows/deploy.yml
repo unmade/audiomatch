@@ -23,14 +23,38 @@ jobs:
       with:
         python-version: "3.8"
 
-    - name: Publish Package to PyPI
+    - name: Install poetry
+      run: |
+        python -m pip install --upgrade pip
+        pip install poetry
+
+    - name: Build Package
+      run: |
+        poetry build --format sdist
+
+    - name: Unpack sdist to build wheels
+      env:
+        TAG: ${{ steps.tag_name.outputs.TAG }}
+      run: |
+        tar -xf dist/audiomatch-"${TAG}".tar.gz -C dist/
+        mv dist/audiomatch-"${TAG}" dist/audiomatch
+
+    - name: Build manylinux wheels
+      uses: RalfG/python-wheels-manylinux-build@v0.2.2
+      with:
+        python-versions: "cp38-cp38"
+        package-path: 'dist/audiomatch'
+
+    - name: Copy wheel to dist
+      run: |
+        cp wheelhouse/*-manylinux*.whl dist/
+        rm -rf dist/audiomatch
+
+    - name: Upload Package to PyPI
       env:
         PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
         PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
       run: |
-        python -m pip install --upgrade pip
-        pip install poetry
-        poetry build
         poetry publish -u $PYPI_USERNAME -p $PYPI_PASSWORD
 
     - name: Wait for PyPI to update indexes
