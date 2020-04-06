@@ -54,6 +54,10 @@ jobs:
       run: |
         tox -e py
 
+    - name: Test with no extensions at all
+      run: |
+        tox -e py-noextensions
+
     - name: Generate coverage report
       run: |
         tox -e coverage

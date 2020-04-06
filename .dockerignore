@@ -1,6 +1,12 @@
-**/*
+**
 
 !src
-!**/*.py
+!build.py
 !pyproject.toml
 !poetry.lock
+!README.rst
+
+**/*.egg-info
+**/.DS_Store
+**/Thumbs.db
+**/__pycache__
