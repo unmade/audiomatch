@@ -4,6 +4,8 @@ import sys
 from pathlib import Path
 from typing import Dict, Tuple
 
+CONFIDENCE_SCORE = 0.61
+
 
 def console(matches: Dict[Tuple[Path, Path], float]) -> None:
     """Print similar audio to standard output"""
@@ -32,11 +34,11 @@ def _join(graph):
     ]
 
 
-def _adjancency_list(matches, score=0.61):
+def _adjancency_list(matches):
     """Returns an adjacency list for matches with a given score or higher"""
     graph = {}
     for pair, score in matches.items():
-        if score > 0.61:
+        if score > CONFIDENCE_SCORE:
             a, b = pair
             graph.setdefault(a, []).append(b)
             graph.setdefault(b, []).append(a)
