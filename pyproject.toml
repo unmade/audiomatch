@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "audiomatch"
-version = "0.2.1"
+version = "0.2.2"
 description = "A small command-line tool to find similar audio files"
 keywords = ["duplicate", "detection", "audio", "fingerprinting", "command-line"]
 readme = "README.rst"
@@ -31,5 +31,5 @@ tox = "^3.14.6"
 pre-commit = "^2.2.0"
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=0.12,<1.0"]
 build-backend = "poetry.masonry.api"
