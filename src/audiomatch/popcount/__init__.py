@@ -11,7 +11,7 @@ except ImportError:
     # This popcount version works slightly faster than 'bin(x).count("1")'
 
     def _popcount_table(size: int) -> List[int]:
-        table = [0] * 2 ** size
+        table = [0] * 2**size
         for i in range(len(table)):
             table[i] = (i & 1) + table[i >> 1]
         return table
