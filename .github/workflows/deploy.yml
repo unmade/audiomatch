@@ -48,7 +48,7 @@ jobs:
     - name: Copy wheel to dist
       run: |
         cp wheelhouse/*-manylinux*.whl dist/
-        rm -rf dist/audiomatch
+        mv dist/audiomatch ./
 
     - name: Upload Package to PyPI
       env:
